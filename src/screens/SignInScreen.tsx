@@ -1,21 +1,14 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import AuthContext from "../AuthContext";
 import Button from "../components/Button";
 
-import AuthenticationDuck  from '../ducks/AuthenticationDuck'
 import { useDispatch } from "react-redux";
 
-
-
 export default function SignInScreen() {
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
-  
 
   return (
     <View style={{ paddingHorizontal: 10 }}>
@@ -32,7 +25,10 @@ export default function SignInScreen() {
         placeholder="Senha"
         style={styles.textInput}
       />
-      <Button title="Login" onPress={() => dispatch({ type: "SIGN_IN", token: '123456789'})} />
+      <Button
+        title="Login"
+        onPress={() => dispatch({ type: "SIGN_IN", token: "123456789" })}
+      />
     </View>
   );
 }

@@ -2,7 +2,7 @@ import { Duck } from "./Duck";
 
 import { StackNavigationProp } from "@react-navigation/stack";
 
-interface PrevState {
+export interface PrevState {
   symbols:string[]
   equities:{[name:string]:{symbol:string, isLoading:boolean}}
 }
@@ -23,6 +23,9 @@ class EquityListDuck extends Duck<PrevState, Action>{
 
   
   public reducer(prevState: PrevState, action: Action){
+      if(!prevState){
+        return this.initialState();
+      }
       switch (action.type) {
         case "ADD_SYMBOL": {
           const { symbol } = action.payload;
@@ -69,4 +72,4 @@ class EquityListDuck extends Duck<PrevState, Action>{
     
 }
 
-export default new EquityListDuck()
+export const equityListDuck =  new EquityListDuck()

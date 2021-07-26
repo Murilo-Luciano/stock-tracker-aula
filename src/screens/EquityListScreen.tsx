@@ -8,14 +8,15 @@ import AddEquityButton from "./AddEquityButton";
 import EquityItem from "./EquityItem";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-import store from '../store'
-import EquityListDuck from "../ducks/EquityListDuck";
+import {equityListDuck} from "../ducks/EquityListDuck";
+
+import { ApplicationState } from "../store";
 
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
-const state = store.getState().equityList
+
 const initialSymbols = ["BRML3", "PETR4", "IGTA3"];
 
 export interface EquityData{
@@ -33,6 +34,8 @@ interface EquityListScreenProps {
 
 
 export default function EquityListContainer({ navigation }:EquityListScreenProps) {
+
+  const {symbols, equities} = useSelector((state:ApplicationState)=> state.equityList)
   const dispatch = useDispatch()
 
   React.useLayoutEffect(() => {
@@ -49,7 +52,7 @@ export default function EquityListContainer({ navigation }:EquityListScreenProps
 
   React.useEffect(() => {
     const asyncEffect = async () => {
-      for (const symbol of state.symbols as string[]) {
+      for (const symbol of symbols as string[]) {
         const name = companies[symbol?.substring(0, 4)] || "Empresa S/A";
         const priceTrend = await fetchPriceTrend(symbol);
         const { close, change } = await fetchCurrentMarketData(symbol);
@@ -61,12 +64,12 @@ export default function EquityListContainer({ navigation }:EquityListScreenProps
     };
 
     asyncEffect();
-  }, [state.symbols]);
+  }, [symbols]);
 
   return (
     <EquityListScreen
       navigation={navigation}
-      data={state.symbols.map((symbol:string) => state.equities[symbol])}
+      data={symbols.map((symbol:string) => equities[symbol])}
     />
   );
 }

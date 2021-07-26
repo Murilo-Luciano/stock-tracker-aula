@@ -7,38 +7,38 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import AccountTabScreen from "./AccountTabScreen";
 import EquityTabScreen from "./EquityTabScreen";
 //import { NavigationStackScreenProps } from "react-navigation-stack";
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
-
 type RouteParamList = {
-  Main: {name: string}
-  EquityTab: {name: string}
-  Account: {name: string}
-}
+  Main: { name: string };
+  EquityTab: { name: string };
+  Account: { name: string };
+};
 
-type MainRouteProp = RouteProp<RouteParamList, 'Main'|'EquityTab'|'Account'>
+type MainRouteProp = RouteProp<
+  RouteParamList,
+  "Main" | "EquityTab" | "Account"
+>;
 
 type MainProp = {
-  navigation: any
-  route: MainRouteProp
-}
-
-
+  navigation: any;
+  route: MainRouteProp;
+};
 
 interface GetTabBarIconProps {
-  focused: boolean
-  color: string
-  size: number
+  focused: boolean;
+  color: string;
+  size: number;
 }
 
 export default function MainScreen() {
   return (
     <Tab.Navigator
       initialRouteName="Main"
-      screenOptions={({ route }:MainProp) => ({
-        tabBarIcon: getTabBarIcon(route)
+      screenOptions={({ route }: MainProp) => ({
+        tabBarIcon: getTabBarIcon(route),
       })}
       tabBarOptions={{
         activeTintColor: "#00e676",
@@ -59,9 +59,8 @@ export default function MainScreen() {
   );
 }
 
-function getTabBarIcon(route:MainRouteProp) {
-  
-  return ({ focused, color, size }:GetTabBarIconProps) => {
+function getTabBarIcon(route: MainRouteProp) {
+  return ({ focused, color, size }: GetTabBarIconProps) => {
     let iconName;
 
     switch (route.name) {

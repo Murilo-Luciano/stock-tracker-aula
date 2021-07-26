@@ -24,8 +24,10 @@ class AuthenticationDuck extends Duck<AuthState, AuthAction> {
   public readonly SIGN_IN = this.type("SIGN_IN");
 
   public reducer(state: AuthState, action: Action) {
-    return this.initialState()
-    /* switch (action.type) {
+    if(!state){
+      return this.initialState()
+    } 
+   switch (action.type) {
       case "LOAD_TOKEN":
         return {
           ...state,
@@ -46,8 +48,7 @@ class AuthenticationDuck extends Duck<AuthState, AuthAction> {
         };
       default:
         return state;
-    } */
-    
+    }
   }
 
   protected initialState(): AuthState {

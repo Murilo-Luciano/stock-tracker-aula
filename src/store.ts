@@ -1,18 +1,24 @@
 import { createStore, combineReducers } from 'redux';
 import {authenticationDuck, AuthState} from './ducks/AuthenticationDuck'
 
-import equityListDuck from './ducks/EquityListDuck'
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+import {equityListDuck, PrevState} from './ducks/EquityListDuck'
 console.log(authenticationDuck.REDUCER)
 
 export interface ApplicationState{
-    authentication: AuthState
+    authentication: AuthState,
+    equityList: PrevState
 }
 
 
 const reducer = combineReducers<ApplicationState>({
-    authentication: authenticationDuck.REDUCER
-    // equityList: equityListDuck.REDUCER
+    authentication: authenticationDuck.REDUCER,
+    equityList: equityListDuck.REDUCER
 })
 
 
-export default createStore(reducer)
+export default createStore(
+    reducer,
+    composeWithDevTools()
+    )

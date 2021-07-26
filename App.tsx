@@ -1,5 +1,7 @@
 import React from "react";
 
+import { composeWithDevTools } from 'redux-devtools-extension' 
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -13,7 +15,7 @@ import SignInScreen from "./src/screens/SignInScreen";
 import AppRoot from "./src/screens/AppRoot";
 
 import store from './src/store'
-import { useDispatch, Provider } from "react-redux";
+import { Provider } from "react-redux";
 
 const state = store.getState().authentication
 

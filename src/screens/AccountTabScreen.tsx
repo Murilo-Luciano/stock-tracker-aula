@@ -3,12 +3,10 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import Button from "../components/Button";
 
-import AuthenticationDuck  from '../ducks/AuthenticationDuck'
 import { useDispatch } from "react-redux";
 
 export default function AccountTabScreen() {
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
 
   return (
     <View>
@@ -16,7 +14,7 @@ export default function AccountTabScreen() {
       <Text style={styles.name}>Fulano</Text>
       <Text style={styles.email}>fulano@gmail.com</Text>
       <View style={styles.signOutButtonContainer}>
-        <Button title="Sair" onPress={() => dispatch({ type: "SIGN_OUT"})} />
+        <Button title="Sair" onPress={() => dispatch({ type: "SIGN_OUT" })} />
       </View>
     </View>
   );
