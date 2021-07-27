@@ -1,16 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Props{
   title:string
+  isLoading?:boolean
   onPress:()=>{}
 }
 
-export default function Button( {title, onPress}:Props) {
+export default function Button( {title, onPress, isLoading}:Props) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
-        <Text style={styles.title}>{title}</Text>
+        {isLoading ? <ActivityIndicator color={"white"} />: <Text style={styles.title}>{title}</Text>
+        }
       </View>
     </TouchableOpacity>
   );

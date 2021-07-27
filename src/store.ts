@@ -1,10 +1,10 @@
 import { createStore, combineReducers, applyMiddleware,MiddlewareAPI, Action, Dispatch} from 'redux';
 import {authenticationDuck, AuthState} from './ducks/AuthenticationDuck'
-
+import thunk from "redux-thunk"
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import {equityListDuck, PrevState} from './ducks/EquityListDuck'
-console.log(authenticationDuck.REDUCER)
+// console.log(authenticationDuck.REDUCER)
 
 export interface ApplicationState{
     authentication: AuthState,
@@ -29,6 +29,5 @@ const myLogger = (store:Store) => (next:Dispatch) => (action:Action) => {
 
 export default createStore(
     reducer,
-    //composeWithDevTools(),
-    applyMiddleware(myLogger)
-    )
+    composeWithDevTools(applyMiddleware(myLogger, thunk))
+)

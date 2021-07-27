@@ -1,5 +1,8 @@
 import React from "react";
 
+import {authenticationDuck} from "../ducks/AuthenticationDuck";
+
+
 import { Text, View, StyleSheet } from "react-native";
 import Button from "../components/Button";
 
@@ -14,7 +17,7 @@ export default function AccountTabScreen() {
       <Text style={styles.name}>Fulano</Text>
       <Text style={styles.email}>fulano@gmail.com</Text>
       <View style={styles.signOutButtonContainer}>
-        <Button title="Sair" onPress={() => dispatch({ type: "SIGN_OUT" })} />
+        <Button title="Sair" onPress={() => dispatch(authenticationDuck.signOut())} />
       </View>
     </View>
   );

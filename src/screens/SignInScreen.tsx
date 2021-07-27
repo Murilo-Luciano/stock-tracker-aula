@@ -1,10 +1,19 @@
 import React from "react";
+
+import {authenticationDuck} from "../ducks/AuthenticationDuck";
+
 import { StyleSheet, TextInput, View } from "react-native";
 import Button from "../components/Button";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { ApplicationState } from "../store";
+
 
 export default function SignInScreen() {
+
+  const {isSigningIn} = useSelector((state:ApplicationState)=> state.authentication)
+
+
   const dispatch = useDispatch();
 
   const [email, setEmail] = React.useState("");
@@ -27,7 +36,9 @@ export default function SignInScreen() {
       />
       <Button
         title="Login"
-        onPress={() => dispatch({ type: "SIGN_IN", token: "123456789" })}
+        onPress={() => dispatch(authenticationDuck.signIn())
+        }
+        isLoading={isSigningIn}
       />
     </View>
   );

@@ -1,5 +1,8 @@
 import React from "react";
 
+import {authenticationDuck} from "../ducks/AuthenticationDuck";
+
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -24,28 +27,13 @@ export default function AppRoot(){
     
 
     React.useEffect(() => {
-      const asyncEffect = async () => {
-        let authToken:string|null;
-  
-        try {
-          authToken = await AsyncStorage.getItem("@auth_token");
-        } catch (e) {
-          // error
-        }
-  
-        // console.log("authToken", authToken);
-        // await new Promise((r) => setTimeout(r, 1000));
-  
-        dispatch({ type: "LOAD_TOKEN", token: authToken });
-      };
-  
-      asyncEffect();
+      dispatch(authenticationDuck.loadToken())
     }, []);
   
-    /* if (isLoading) {
+    if (isLoading) {
       return <SplashScreen />;
     }
- */
+ 
 
     return(
         <Stack.Navigator>

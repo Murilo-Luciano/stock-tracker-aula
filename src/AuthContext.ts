@@ -17,7 +17,11 @@ let context = React.createContext<ContextProp>({
     signIn: async () => {
         const dummyToken = "12345678910";
         await AsyncStorage.setItem("@auth_token", dummyToken);
-        dispatch({ type: "SIGN_IN", token: dummyToken });
+
+          dispatch(function(dispatch:any){
+            
+            dispatch({type: "SIGN_IN", token: dummyToken});
+          });
       },
       signOut: async () => {
         await AsyncStorage.removeItem("@auth_token");
