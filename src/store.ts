@@ -1,4 +1,4 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import {authenticationDuck, AuthState} from './ducks/AuthenticationDuck'
 
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -17,8 +17,14 @@ const reducer = combineReducers<ApplicationState>({
     equityList: equityListDuck.REDUCER
 })
 
+const myLogger = (store:any) => (next:any) => (action:any) => {
+    console.log("Logged Action -> ", action)
+    
+    next(action)
+}
 
 export default createStore(
     reducer,
-    composeWithDevTools()
+    //composeWithDevTools(),
+    applyMiddleware(myLogger)
     )

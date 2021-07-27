@@ -10,7 +10,9 @@ interface LoadTokenAction extends Action<string> {
   token: string | null;
 }
 
+
 type SignOutAction = Action<string>;
+
 
 interface SignInAction extends Action<string> {
   token: string | null;

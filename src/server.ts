@@ -28,8 +28,8 @@ export async function fetchCurrentMarketData(symbol:string) {
   console.log(priceDate)
 
   const response = await server.get(`prices/${priceDate}?symbols[]=${symbol}`);
-  const data = response.data[0];
-  // const data = {close: 1, change: 1}
+  //const data = response.data[0];
+  const data = {close: 1, change: 1}
   
 
   console.log(data)
