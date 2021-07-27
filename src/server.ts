@@ -22,14 +22,14 @@ export async function fetchPriceTrend(symbol:string) {
 export async function fetchCurrentMarketData(symbol:string) {
   const currentDate = new Date();
   // o certo seria pegar o último dia útil, aqui está simplificado
-  currentDate.setDate(currentDate.getDate()-3);
+  currentDate.setDate(currentDate.getDate()-1);
   const priceDate = currentDate.toISOString().substring(0, 10);
 
   console.log(priceDate)
 
   const response = await server.get(`prices/${priceDate}?symbols[]=${symbol}`);
-  //const data = response.data[0];
-  const data = {close: 1, change: 1}
+  const data = response.data[0];
+  // const data = {close: 1, change: 1}
   
 
   console.log(data)
