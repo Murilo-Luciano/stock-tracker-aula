@@ -6,7 +6,7 @@ export interface AuthState {
   isLoading: boolean;
   authToken: string | null;
   hasError: boolean;
-  isSigningIn: boolean;
+  isSigningIn?: boolean;
 }
 
 interface LoadTokenAction extends Action<string> {
@@ -112,7 +112,8 @@ class AuthenticationDuck extends Duck<AuthState, AuthAction> {
     return {
       isLoading: true,
       authToken: null,
-      hasError: false
+      hasError: false,
+      
     };
   }
   protected namespace(): string {

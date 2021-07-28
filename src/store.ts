@@ -3,12 +3,15 @@ import {authenticationDuck, AuthState} from './ducks/AuthenticationDuck'
 import thunk from "redux-thunk"
 import { composeWithDevTools } from 'redux-devtools-extension';
 
+import { serverDuck, ServerState } from './ducks/ServerDuck';
+
 import {equityListDuck, PrevState} from './ducks/EquityListDuck'
 // console.log(authenticationDuck.REDUCER)
 
 export interface ApplicationState{
     authentication: AuthState,
-    equityList: PrevState
+    equityList: PrevState,
+    serverDuck: ServerState
 }
 
 interface Store extends MiddlewareAPI {
@@ -18,7 +21,10 @@ interface Store extends MiddlewareAPI {
 
 const reducer = combineReducers<ApplicationState>({
     authentication: authenticationDuck.REDUCER,
-    equityList: equityListDuck.REDUCER
+    equityList: equityListDuck.REDUCER,
+    serverDuck: serverDuck.REDUCER
+
+
 })
 
 const myLogger = (store:Store) => (next:Dispatch) => (action:Action) => {

@@ -10,6 +10,8 @@ import { StackNavigationProp } from "@react-navigation/stack";
 
 import {equityListDuck} from "../ducks/EquityListDuck";
 
+import { serverDuck } from "../ducks/ServerDuck";
+
 import { ApplicationState } from "../store";
 
 
@@ -36,6 +38,8 @@ interface EquityListScreenProps {
 export default function EquityListContainer({ navigation }:EquityListScreenProps) {
 
   const {symbols, equities} = useSelector((state:ApplicationState)=> state.equityList)
+  const {close, change} = useSelector((state:ApplicationState)=> state.serverDuck.currentMarketData)
+  const priceTrend = useSelector((state:ApplicationState)=> state.serverDuck.priceTrend)
   const dispatch = useDispatch()
 
   React.useLayoutEffect(() => {
@@ -54,12 +58,14 @@ export default function EquityListContainer({ navigation }:EquityListScreenProps
     const asyncEffect = async () => {
       for (const symbol of symbols as string[]) {
         const name = companies[symbol?.substring(0, 4)] || "Empresa S/A";
-        const priceTrend = await fetchPriceTrend(symbol);
-        const { close, change } = await fetchCurrentMarketData(symbol);
+        // const priceTrend = await fetchPriceTrend(symbol); //Dar um dispatch
+        dispatch(serverDuck.fetchPriceTrend(symbol)); 
+        // const { close, change } = await fetchCurrentMarketData(symbol); 
+        dispatch(serverDuck.fetchCurrentMarketData(symbol))
         dispatch({
           type: "LOAD_EQUITY",
           payload: { symbol, name, marketData: { close, change, priceTrend } },
-        });
+        })
       }
     };
 
