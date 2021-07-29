@@ -104,7 +104,7 @@ class AuthenticationDuck extends Duck<AuthState, AuthAction> {
 
       setTimeout(() => {
         dispatch({ type: this.LOAD_TOKEN, token: authToken });
-      }, 3000);
+      }, 100);
     };
   }
 

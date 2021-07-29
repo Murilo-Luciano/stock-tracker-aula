@@ -5,17 +5,17 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { serverDuck, ServerState } from './ducks/ServerDuck';
 
-import {equityListDuck, PrevState} from './ducks/EquityListDuck'
+import {equityListDuck, EquityListState} from './ducks/EquityListDuck'
 // console.log(authenticationDuck.REDUCER)
 
 export interface ApplicationState{
     authentication: AuthState,
-    equityList: PrevState,
+    equityList: EquityListState,
     serverDuck: ServerState
 }
 
 interface Store extends MiddlewareAPI {
-    store: AuthState | PrevState;
+    store: AuthState | EquityListState;
 }
 
 

@@ -4,7 +4,7 @@ const server = axios.create({
   baseURL: "https://api.informativos.io/",
 });
 
-export async function fetchPriceTrend(symbol:string) {
+export async function fetchPriceTrend(symbol:string):Promise<number[]> {
   const today = new Date();
   const endDate = today.toISOString().substring(0, 10);
 

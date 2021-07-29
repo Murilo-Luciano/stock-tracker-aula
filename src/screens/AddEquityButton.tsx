@@ -3,7 +3,7 @@ import React, {useState} from "react";
 
 
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-// import Dialog from "react-native-dialog";
+import Dialog from "react-native-dialog";
 
 interface AddEquityButtonProps{
     onAddEquity:(symbol?:string)=>void
@@ -19,14 +19,14 @@ export default function AddEquityButton({ onAddEquity }:AddEquityButtonProps) {
           <Text style={styles.icon}>+</Text>
         </View>
       </TouchableOpacity>
-      {/* <AddEquityDialog
+      <AddEquityDialog
         visible={dialogVisible}
         onAddEquity={(symbol:string) => {
           setDialogVisible(false);
-          onAddEquity();
+          onAddEquity(symbol);
         }}
         onCancel={() => setDialogVisible(false)}
-      /> */}
+      />
     </>
   );
 }
@@ -37,33 +37,33 @@ interface AddEquityDialogProps{
   onCancel:()=>void
 }
 
-// function AddEquityDialog({ visible, onAddEquity, onCancel }:AddEquityDialogProps) {
-//   const [symbol, setSymbol] = React.useState("");
+function AddEquityDialog({ visible, onAddEquity, onCancel }:AddEquityDialogProps) {
+  const [symbol, setSymbol] = React.useState("");
 
-//   return (
-//     <Dialog.Container visible={visible}>
-//       <Dialog.Title>Adicionar ativo</Dialog.Title>
-//       <Dialog.Input
-//         label="Ticker"
-//         value={symbol}
-//         onChangeText={(change) => setSymbol(change)}
-//       />
-//       <Dialog.Button
-//         label="Cancelar"
-//         onPress={() => {
-//           setSymbol("");
-//           onCancel();
-//         }}
-//       />
-//       <Dialog.Button
-//         label="Adicionar"
-//         onPress={() => {
-//           onAddEquity(symbol);
-//         }}
-//       />
-//     </Dialog.Container>
-//   );
-// }
+  return (
+    <Dialog.Container visible={visible}>
+      <Dialog.Title>Adicionar ativo</Dialog.Title>
+      <Dialog.Input
+        label="Ticker"
+        value={symbol}
+        onChangeText={(change) => setSymbol(change)}
+      />
+      <Dialog.Button
+        label="Cancelar"
+        onPress={() => {
+          setSymbol("");
+          onCancel();
+        }}
+      />
+      <Dialog.Button
+        label="Adicionar"
+        onPress={() => {
+          onAddEquity(symbol);
+        }}
+      />
+    </Dialog.Container>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {

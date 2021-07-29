@@ -1,65 +1,103 @@
 import { Duck } from "./Duck";
 
+import { fetchCurrentMarketData, fetchPriceTrend } from "../server";
+
 import { StackNavigationProp } from "@react-navigation/stack";
 
-export interface PrevState {
-  symbols:string[]
-  equities:{[name:string]:{symbol:string, isLoading:boolean}}
+import companies from "../utils/companies"
+import { Action } from "redux";
+export interface EquityListState{
+  equities:Equity[]
 }
-  
-interface Action{
-  type:string 
-  payload:{symbol:string, name?:string, marketData?:{close:number, change:number, priceTrend:number[]}}
-}
-  
 
+export interface Equity{
+  name?:string,
+  symbol:string,
+  marketData?:MarketData,
+  isLoading:boolean,
+}
+
+interface MarketData{
+  close:number,
+  change:number,
+  priceTrend:number[]
+}
+interface AddEquityFulfilledAction extends Action<string>{
+  payload:{symbol:string, name:string, marketData:MarketData}
+}
+
+interface AddEquityPendingAction extends Action<string>{
+  payload:{symbol:string}
+}
+
+type EquityListAction = AddEquityFulfilledAction | AddEquityPendingAction
 
 const initialSymbols = ["BRML3", "PETR4", "IGTA3"];
 
-class EquityListDuck extends Duck<PrevState, Action>{
+class EquityListDuck extends Duck<EquityListState, EquityListAction>{
   
-  public readonly ADD_SYMBOL = this.type('ADD_SYMBOL');
-  public readonly LOAD_EQUITY = this.type('LOAD_EQUITY');
+  public readonly ADD_EQUITY_PENDING = this.type('ADD_EQUITY_PENDING');
+  public readonly ADD_EQUITY_FULFILLED = this.type('ADD_EQUITY_FULFILLED');
 
   
-  public reducer(prevState: PrevState, action: Action){
-      if(!prevState){
+  public reducer(state: EquityListState, action: EquityListAction){
+      if(!state){
         return this.initialState();
       }
       switch (action.type) {
-        case "ADD_SYMBOL": {
-          const { symbol } = action.payload;
-          return {
-            ...prevState,
-            symbols: [...prevState.symbols, symbol],
-            equities: {
-              ...prevState.equities,
-              [symbol]: { symbol, isLoading: true },
-            },
-          };
+        case this.ADD_EQUITY_PENDING:{
+          const symbol = action.payload.symbol
+          return{
+            ...state,
+            equities:[
+              ...state.equities,
+              {symbol, isLoading: true}]
+          }
         }
-        case "LOAD_EQUITY": {
-          const { symbol, name, marketData } = action.payload;
-          return {
-            ...prevState,
-            equities: {
-              ...prevState.equities,
-              [symbol]: { symbol, name, marketData, isLoading: false },
-            },
-          };
+
+        case this.ADD_EQUITY_FULFILLED:{
+          const {symbol, name, marketData} = (action as AddEquityFulfilledAction).payload
+          
+          return{
+            ...state,
+            equities:[
+              ...state.equities.slice(0, -1),
+              {name, symbol, marketData, isLoading:false}
+            ]
+          }
         }
         default:
-          return prevState;
+          return state;
       }
     }
     
-    protected initialState(): PrevState {
+    public addEquity(symbol:string){
+      return async (dispatch: any) => {
+        dispatch({ type: this.ADD_EQUITY_PENDING, payload:{symbol}})
+
+        const priceTrend = await fetchPriceTrend(symbol);
+        const {close, change} = await fetchCurrentMarketData(symbol)
+        const name = companies[symbol?.substring(0, 4)] || "Empresa S/A"
+
+        dispatch({
+          type: this.ADD_EQUITY_FULFILLED,
+           payload:{
+             symbol,
+             name,
+             marketData:{
+                close,
+                change,
+                priceTrend
+             }
+            }})
+          
+      }
+    }
+
+    
+    protected initialState(): EquityListState {
       return {
-        symbols: initialSymbols,
-        equities: initialSymbols.reduce(
-          (acc, symbol) => ({ ...acc, [symbol]: { symbol, isLoading: true } }),
-          {}
-        ),
+        equities: []
       }
     }
     protected namespace(): string {
